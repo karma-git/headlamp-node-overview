@@ -1,0 +1,13 @@
+{
+  "name": "@kubefast/app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "serve": "npm run build && kubectl proxy --www=./dist --www-prefix=/ui/ --api-prefix=/ --port=8001"
+  },
+  "dependencies": { "@kubefast/core": "*" },
+  "devDependencies": { "typescript": "^5.6.0", "vite": "^6.0.0" }
+}

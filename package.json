@@ -1,0 +1,13 @@
+{
+  "name": "kubefast",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "dev": "npm run dev -w @kubefast/app",
+    "build": "npm run build -w @kubefast/app",
+    "serve": "npm run serve -w @kubefast/app",
+    "plugin:start": "npm start -w headlamp-pod-map",
+    "plugin:build": "npm run build -w headlamp-pod-map"
+  }
+}

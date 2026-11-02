@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>kubefast</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #0f1419; color: #d6dbe0; font: 13px/1.4 system-ui, sans-serif; }
+      #bar { display: flex; gap: 12px; align-items: center; padding: 8px 12px; background: #161c23; border-bottom: 1px solid #263039; }
+      #bar input, #bar select { background: #0f1419; color: inherit; border: 1px solid #2e3a45; border-radius: 4px; padding: 4px 8px; font: inherit; }
+      #bar input { width: 260px; }
+      #stat { margin-left: auto; color: #8a97a3; }
+      #wrap { position: absolute; top: 41px; bottom: 0; left: 0; right: 0; overflow: auto; }
+      canvas { display: block; }
+      #tip { position: fixed; pointer-events: none; display: none; background: #1d252d; border: 1px solid #36434f; border-radius: 4px; padding: 6px 8px; white-space: pre; font: 12px ui-monospace, monospace; z-index: 5; max-width: 480px; }
+    </style>
+  </head>
+  <body>
+    <div id="bar">
+      <input id="q" placeholder="search pods: name, ns, node, status…  (ns:foo  status:crash  is:noreq  is:nolimit)" />
+      <label>group nodes by <select id="group"></select></label>
+      <label>view <select id="view"><option value="requests">requests</option><option value="limits">limits</option></select></label>
+      <label>size by <select id="size"><option value="fixed">equal</option><option value="mem">memory</option><option value="cpu">cpu</option></select></label>
+      <label>color by <select id="color"><option value="status">status</option><option value="ns">namespace</option></select></label>
+      <span id="stat">connecting…</span>
+    </div>
+    <div id="wrap"><canvas id="c"></canvas></div>
+    <div id="tip"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

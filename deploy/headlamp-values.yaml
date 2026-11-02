@@ -1,0 +1,20 @@
+# Example values for the official Headlamp Helm chart (not verified against a live cluster:
+# check key names against your chart version).
+config:
+  pluginsDir: /headlamp/plugins
+
+initContainers:
+  - name: pod-map-plugin
+    image: <registry>/headlamp-pod-map:0.1.0
+    command: ["/bin/sh", "-c", "cp -r /plugins/* /headlamp/plugins/"]
+    volumeMounts:
+      - name: plugins
+        mountPath: /headlamp/plugins
+
+volumes:
+  - name: plugins
+    emptyDir: {}
+
+volumeMounts:
+  - name: plugins
+    mountPath: /headlamp/plugins
