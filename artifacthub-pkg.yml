@@ -1,7 +1,7 @@
 version: 0.1.0
 name: headlamp-pod-map
 displayName: Pod Map
-createdAt: '2026-11-02T00:00:00Z'
+createdAt: '2026-11-03T04:44:18Z'
 description: Fast pod-to-node map for Headlamp. Every pod on one canvas, grouped by node labels, with search, requests/limits/usage bars and tooltips.
 license: Apache-2.0
 homeURL: https://github.com/karma-git/headlamp-pod-map
@@ -27,5 +27,5 @@ install: |
   the Headlamp plugins directory. The map appears as "Pod Map" in the sidebar.
 annotations:
   headlamp/plugin/archive-url: https://github.com/karma-git/headlamp-pod-map/releases/download/v0.1.0/headlamp-pod-map-0.1.0.tar.gz
-  headlamp/plugin/archive-checksum: SHA256:TO_BE_FILLED_BY_RELEASE_WORKFLOW
+  headlamp/plugin/archive-checksum: SHA256:99df04d6f48e0bc9d21c00b6349e6d609dd29fe67f3ab672e73c4a98971286aa
   headlamp/plugin/distro-compat: in-cluster,web,docker-desktop,desktop
