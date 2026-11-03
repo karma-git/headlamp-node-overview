@@ -2,12 +2,21 @@
   "name": "kubefast",
   "private": true,
   "version": "0.1.0",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "npm run dev -w @kubefast/app",
     "build": "npm run build -w @kubefast/app",
     "serve": "npm run serve -w @kubefast/app",
     "plugin:start": "npm start -w headlamp-pod-map",
-    "plugin:build": "npm run build -w headlamp-pod-map"
+    "plugin:build": "npm run build -w headlamp-pod-map",
+    "plugin:lint": "npm run lint -w headlamp-pod-map",
+    "plugin:tsc": "npm run tsc -w headlamp-pod-map",
+    "plugin:package": "npm run package -w headlamp-pod-map",
+    "test": "vitest run packages/core"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
   }
 }

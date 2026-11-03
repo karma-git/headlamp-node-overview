@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+env:
+  PLUGIN_DIR: packages/headlamp-pod-map
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Resolve version
+        id: v
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          case "$TAG" in v[0-9]*.[0-9]*.[0-9]*) ;; *) echo "Tag must look like vX.Y.Z, got $TAG"; exit 1;; esac
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+      - name: Align plugin version
+        run: npm version "${{ steps.v.outputs.version }}" -w headlamp-pod-map --no-git-tag-version --allow-same-version
+      - run: npm ci
+      - run: npm test
+      - run: npm run plugin:tsc
+      - run: npm run plugin:lint
+      - run: npm run plugin:build
+      - run: npm run plugin:package
+      - name: Checksum
+        id: sum
+        run: echo "value=$(sha256sum $PLUGIN_DIR/headlamp-pod-map-${{ steps.v.outputs.version }}.tar.gz | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+      - name: Upload tarball to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ steps.v.outputs.tag }}" "$PLUGIN_DIR/headlamp-pod-map-${{ steps.v.outputs.version }}.tar.gz" --clobber
+      - name: Switch to main
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
+      - name: Update metadata
+        run: |
+          V="${{ steps.v.outputs.version }}"
+          npm version "$V" -w headlamp-pod-map --no-git-tag-version --allow-same-version
+          sed -i -E \
+            -e "s|^version: .*|version: $V|" \
+            -e "s|^createdAt: .*|createdAt: '$(date -u +%Y-%m-%dT%H:%M:%SZ)'|" \
+            -e "s|archive-url: .*|archive-url: https://github.com/${{ github.repository }}/releases/download/${{ steps.v.outputs.tag }}/headlamp-pod-map-$V.tar.gz|" \
+            -e "s|archive-checksum: .*|archive-checksum: SHA256:${{ steps.sum.outputs.value }}|" \
+            artifacthub-pkg.yml
+      - name: Commit metadata to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacthub-pkg.yml package-lock.json $PLUGIN_DIR/package.json
+          git diff --cached --quiet || git commit -m "chore: release ${{ steps.v.outputs.version }}"
+          git push origin HEAD:main

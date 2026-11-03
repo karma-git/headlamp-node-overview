@@ -1,0 +1,41 @@
+{
+  "name": "headlamp-pod-map",
+  "version": "0.1.0",
+  "description": "Fast pod-to-node map for Headlamp: every pod on a canvas, grouped by node labels, with search, requests/limits/usage bars and tooltips",
+  "scripts": {
+    "start": "headlamp-plugin start",
+    "build": "headlamp-plugin build",
+    "format": "headlamp-plugin format",
+    "lint": "headlamp-plugin lint",
+    "tsc": "headlamp-plugin tsc",
+    "package": "headlamp-plugin package"
+  },
+  "keywords": [
+    "headlamp",
+    "headlamp-plugin",
+    "kubernetes",
+    "pods",
+    "nodes"
+  ],
+  "prettier": "@headlamp-k8s/eslint-config/prettier-config",
+  "eslintConfig": {
+    "extends": [
+      "@headlamp-k8s",
+      "prettier"
+    ]
+  },
+  "dependencies": {
+    "@kubefast/core": "*"
+  },
+  "devDependencies": {
+    "@kinvolk/headlamp-plugin": "^0.14.0"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karma-git/headlamp-pod-map.git",
+    "directory": "packages/headlamp-pod-map"
+  },
+  "homepage": "https://github.com/karma-git/headlamp-pod-map",
+  "bugs": "https://github.com/karma-git/headlamp-pod-map/issues"
+}

@@ -1,26 +1,26 @@
 import { K8s, Router } from '@kinvolk/headlamp-plugin/lib';
 import { request } from '@kinvolk/headlamp-plugin/lib/ApiProxy';
 import {
-  DARK,
-  LIGHT,
   type ColorMode,
-  emptyUsage,
-  parseNodeMetrics,
-  parsePodMetrics,
-  type Usage,
   compileQuery,
   computeLayout,
+  DARK,
   draw,
+  emptyUsage,
   groupLabelKeys,
   hitNode,
   hitPod,
-  nodeTip,
-  podTip,
-  type View,
+  LIGHT,
   type NodeInfo,
+  nodeTip,
+  parseNodeMetrics,
+  parsePodMetrics,
+  podTip,
   type SizeMode,
   toNode,
   toPod,
+  type Usage,
+  type View,
 } from '@kubefast/core';
 import { MenuItem, Select, TextField, Typography, useTheme } from '@mui/material';
 import React from 'react';
@@ -39,14 +39,24 @@ function useUsage(): { usage: Usage; error: string } {
       try {
         const nodes = parseNodeMetrics(await request(`${M}/nodes`));
         const pods = parsePodMetrics(await request(`${M}/pods`));
-        if (!stop) { setUsage({ nodes, pods }); setError(''); }
-      } catch (e) {
-        if (!stop) setError('metrics-server not available');
+        if (!stop) {
+          setUsage({ nodes, pods });
+          setError('');
+        }
+      } catch (e: any) {
+        if (!stop) {
+          setError(
+            e?.status === 404 ? 'metrics-server not available' : `metrics: ${e?.message ?? e}`
+          );
+        }
       }
       if (!stop) timer = setTimeout(tick, POLL_MS);
     };
     void tick();
-    return () => { stop = true; clearTimeout(timer); };
+    return () => {
+      stop = true;
+      clearTimeout(timer);
+    };
   }, []);
   return { usage, error };
 }
@@ -107,8 +117,12 @@ export default function PodMap() {
     const ctx = c?.getContext('2d');
     if (!c || !ctx) return;
     const dpr = window.devicePixelRatio || 1;
-    c.width = Math.floor(dims.w * dpr);
-    c.height = Math.floor(dims.h * dpr);
+    const bw = Math.floor(dims.w * dpr);
+    const bh = Math.floor(dims.h * dpr);
+    if (c.width !== bw || c.height !== bh) {
+      c.width = bw;
+      c.height = bh;
+    }
     draw(ctx, { layout, scrollY: sy, w: dims.w, h: dims.h, dpr, color, view, theme, match });
   }, [layout, sy, dims, color, view, theme, match]);
 
@@ -123,37 +137,41 @@ export default function PodMap() {
     return () => c.removeEventListener('wheel', onWheel);
   }, [maxScroll]);
 
-  const targetUrl = (e: React.MouseEvent<HTMLCanvasElement>): string | null => {
+  const hit = (e: React.MouseEvent<HTMLCanvasElement>): { url: string; text: string } | null => {
     const r = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - r.left;
     const y = e.clientY - r.top + sy;
     const i = hitPod(layout, x, y);
     if (i >= 0) {
       const p = layout.pods[i];
-      return Router.createRouteURL('pod', { namespace: p.ns, name: p.name });
+      return {
+        url: Router.createRouteURL('pod', { namespace: p.ns, name: p.name }),
+        text: podTip(layout, i),
+      };
     }
     const b = hitNode(layout, x, y);
-    return b?.node ? Router.createRouteURL('node', { name: b.node.name }) : null;
+    return b?.node
+      ? { url: Router.createRouteURL('node', { name: b.node.name }), text: nodeTip(b) }
+      : null;
   };
 
   const onClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const url = targetUrl(e);
-    if (url) history.push(url);
+    const h = hit(e);
+    if (h) history.push(h.url);
   };
 
   const onMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    e.currentTarget.style.cursor = targetUrl(e) ? 'pointer' : 'default';
-    const r = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - r.left;
-    const y = e.clientY - r.top + sy;
-    let text = '';
-    const i = hitPod(layout, x, y);
-    if (i >= 0) text = podTip(layout, i);
-    else {
-      const b = hitNode(layout, x, y);
-      if (b?.node) text = nodeTip(b);
-    }
-    setTip(text ? { x: e.clientX + 14, y: e.clientY + 14, text } : null);
+    const h = hit(e);
+    e.currentTarget.style.cursor = h ? 'pointer' : 'default';
+    setTip(
+      h
+        ? {
+            x: Math.min(e.clientX + 14, window.innerWidth - 420),
+            y: Math.min(e.clientY + 14, window.innerHeight - 200),
+            text: h.text,
+          }
+        : null
+    );
   };
 
   const err = podErr || nodeErr;
@@ -161,7 +179,15 @@ export default function PodMap() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)' }}>
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center', padding: '8px 0' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 12,
+          alignItems: 'center',
+          padding: '8px 0',
+        }}
+      >
         <TextField
           size="small"
           style={{ width: 320 }}
@@ -206,7 +232,16 @@ export default function PodMap() {
               }`}
         </Typography>
       </div>
-      <div ref={wrapRef} style={{ flex: 1, background: dark ? '#0f1419' : '#ffffff', border: dark ? 'none' : '1px solid #d1d9e0', borderRadius: 4, overflow: 'hidden' }}>
+      <div
+        ref={wrapRef}
+        style={{
+          flex: 1,
+          background: dark ? '#0f1419' : '#ffffff',
+          border: dark ? 'none' : '1px solid #d1d9e0',
+          borderRadius: 4,
+          overflow: 'hidden',
+        }}
+      >
         <canvas
           ref={canvasRef}
           style={{ width: dims.w, height: dims.h, display: 'block' }}

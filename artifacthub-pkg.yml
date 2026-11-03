@@ -1,0 +1,31 @@
+version: 0.1.0
+name: headlamp-pod-map
+displayName: Pod Map
+createdAt: '2026-11-02T00:00:00Z'
+description: Fast pod-to-node map for Headlamp. Every pod on one canvas, grouped by node labels, with search, requests/limits/usage bars and tooltips.
+license: Apache-2.0
+homeURL: https://github.com/karma-git/headlamp-pod-map
+category: monitoring-logging
+keywords:
+  - pods
+  - nodes
+  - capacity
+  - scheduling
+  - kubernetes
+  - headlamp
+  - headlamp-plugin
+links:
+  - name: Source
+    url: https://github.com/karma-git/headlamp-pod-map
+  - name: Issues
+    url: https://github.com/karma-git/headlamp-pod-map/issues
+maintainers:
+  - name: Andrew Horbach
+    email: andrewhorbach@gmail.com
+install: |
+  Install from the Headlamp Plugin Catalog, or download the release tarball and extract it into
+  the Headlamp plugins directory. The map appears as "Pod Map" in the sidebar.
+annotations:
+  headlamp/plugin/archive-url: https://github.com/karma-git/headlamp-pod-map/releases/download/v0.1.0/headlamp-pod-map-0.1.0.tar.gz
+  headlamp/plugin/archive-checksum: SHA256:TO_BE_FILLED_BY_RELEASE_WORKFLOW
+  headlamp/plugin/distro-compat: in-cluster,web,docker-desktop,desktop
