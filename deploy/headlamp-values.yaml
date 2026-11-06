@@ -4,8 +4,8 @@ config:
   pluginsDir: /headlamp/plugins
 
 initContainers:
-  - name: pod-map-plugin
-    image: <registry>/headlamp-pod-map:0.1.0
+  - name: node-overview-plugin
+    image: <registry>/headlamp-node-overview:0.1.0
     command: ["/bin/sh", "-c", "cp -r /plugins/* /headlamp/plugins/"]
     volumeMounts:
       - name: plugins

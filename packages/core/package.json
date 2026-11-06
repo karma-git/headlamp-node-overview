@@ -1,5 +1,5 @@
 {
-  "name": "@kubefast/core",
+  "name": "@node-overview/core",
   "version": "0.1.0",
   "private": true,
   "type": "module",

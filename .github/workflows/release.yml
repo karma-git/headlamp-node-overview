@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 env:
-  PLUGIN_DIR: packages/headlamp-pod-map
+  PLUGIN_DIR: packages/headlamp-node-overview
 
 jobs:
   release:
@@ -29,7 +29,7 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
       - name: Align plugin version
-        run: npm version "${{ steps.v.outputs.version }}" -w headlamp-pod-map --no-git-tag-version --allow-same-version
+        run: npm version "${{ steps.v.outputs.version }}" -w headlamp-node-overview --no-git-tag-version --allow-same-version
       - run: npm ci
       - run: npm test
       - run: npm run plugin:tsc
@@ -38,11 +38,11 @@ jobs:
       - run: npm run plugin:package
       - name: Checksum
         id: sum
-        run: echo "value=$(sha256sum $PLUGIN_DIR/headlamp-pod-map-${{ steps.v.outputs.version }}.tar.gz | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+        run: echo "value=$(sha256sum $PLUGIN_DIR/headlamp-node-overview-${{ steps.v.outputs.version }}.tar.gz | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
       - name: Upload tarball to the release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ steps.v.outputs.tag }}" "$PLUGIN_DIR/headlamp-pod-map-${{ steps.v.outputs.version }}.tar.gz" --clobber
+        run: gh release upload "${{ steps.v.outputs.tag }}" "$PLUGIN_DIR/headlamp-node-overview-${{ steps.v.outputs.version }}.tar.gz" --clobber
       - name: Switch to main
         run: |
           git fetch origin main
@@ -50,11 +50,11 @@ jobs:
       - name: Update metadata
         run: |
           V="${{ steps.v.outputs.version }}"
-          npm version "$V" -w headlamp-pod-map --no-git-tag-version --allow-same-version
+          npm version "$V" -w headlamp-node-overview --no-git-tag-version --allow-same-version
           sed -i -E \
             -e "s|^version: .*|version: $V|" \
             -e "s|^createdAt: .*|createdAt: '$(date -u +%Y-%m-%dT%H:%M:%SZ)'|" \
-            -e "s|archive-url: .*|archive-url: https://github.com/${{ github.repository }}/releases/download/${{ steps.v.outputs.tag }}/headlamp-pod-map-$V.tar.gz|" \
+            -e "s|archive-url: .*|archive-url: https://github.com/${{ github.repository }}/releases/download/${{ steps.v.outputs.tag }}/headlamp-node-overview-$V.tar.gz|" \
             -e "s|archive-checksum: .*|archive-checksum: SHA256:${{ steps.sum.outputs.value }}|" \
             artifacthub-pkg.yml
       - name: Commit metadata to main

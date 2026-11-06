@@ -1,4 +1,4 @@
-import { emptyUsage, parseNodeMetrics, parsePodMetrics } from '@kubefast/core';
+import { emptyUsage, parseNodeMetrics, parsePodMetrics } from '@node-overview/core';
 
 const INTERVAL = 15000;
 const M = '/apis/metrics.k8s.io/v1beta1';

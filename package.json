@@ -1,19 +1,19 @@
 {
-  "name": "kubefast",
+  "name": "node-overview-monorepo",
   "private": true,
   "version": "0.1.0",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev -w @kubefast/app",
-    "build": "npm run build -w @kubefast/app",
-    "serve": "npm run serve -w @kubefast/app",
-    "plugin:start": "npm start -w headlamp-pod-map",
-    "plugin:build": "npm run build -w headlamp-pod-map",
-    "plugin:lint": "npm run lint -w headlamp-pod-map",
-    "plugin:tsc": "npm run tsc -w headlamp-pod-map",
-    "plugin:package": "npm run package -w headlamp-pod-map",
+    "dev": "npm run dev -w @node-overview/app",
+    "build": "npm run build -w @node-overview/app",
+    "serve": "npm run serve -w @node-overview/app",
+    "plugin:start": "npm start -w headlamp-node-overview",
+    "plugin:build": "npm run build -w headlamp-node-overview",
+    "plugin:lint": "npm run lint -w headlamp-node-overview",
+    "plugin:tsc": "npm run tsc -w headlamp-node-overview",
+    "plugin:package": "npm run package -w headlamp-node-overview",
     "test": "vitest run packages/core"
   },
   "devDependencies": {

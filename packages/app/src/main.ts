@@ -3,7 +3,7 @@ import { MetricsPoller } from './metrics';
 import {
   compileQuery, computeLayout, groupLabelKeys, draw, hitNode, hitPod, nodeTip, podTip,
   type ColorMode, type Layout, type SizeMode, type View,
-} from '@kubefast/core';
+} from '@node-overview/core';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const wrap = $<HTMLDivElement>('wrap');

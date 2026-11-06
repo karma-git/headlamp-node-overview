@@ -1,9 +1,9 @@
-# headlamp-pod-map
+# headlamp-node-overview
 
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/headlamp-pod-map)](https://artifacthub.io/packages/search?repo=headlamp-pod-map)
-[![CI](https://github.com/karma-git/headlamp-pod-map/actions/workflows/ci.yml/badge.svg)](https://github.com/karma-git/headlamp-pod-map/actions/workflows/ci.yml)
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/headlamp-node-overview)](https://artifacthub.io/packages/search?repo=headlamp-node-overview)
+[![CI](https://github.com/karma-git/headlamp-node-overview/actions/workflows/ci.yml/badge.svg)](https://github.com/karma-git/headlamp-node-overview/actions/workflows/ci.yml)
 
-A fast pod-to-node map for Kubernetes, as a [Headlamp](https://headlamp.dev) plugin and as a standalone page served by `kubectl proxy`. Every pod in the cluster is drawn as a square inside its node on a single canvas, so clusters with thousands of pods stay responsive.
+A fast overview of every node in a Kubernetes cluster and the pods running on it, as a [Headlamp](https://headlamp.dev) plugin and as a standalone page served by `kubectl proxy`. Nodes are drawn as cards with CPU/memory requests, limits and usage, and every pod is a square inside its node on a single canvas, so clusters with thousands of pods stay responsive.
 
 ## Features
 
@@ -21,7 +21,7 @@ A fast pod-to-node map for Kubernetes, as a [Headlamp](https://headlamp.dev) plu
 
 ## Install
 
-- **Headlamp Desktop**: open the Plugin Catalog, search for "Pod Map" and install.
+- **Headlamp Desktop**: open the Plugin Catalog, search for "Node Overview" and install.
 - **In-cluster Headlamp**: add the plugin through the Helm chart's `pluginsManager` (see the [Headlamp docs](https://headlamp.dev/docs/latest/installation/in-cluster/)):
 
   ```yaml
@@ -29,13 +29,13 @@ A fast pod-to-node map for Kubernetes, as a [Headlamp](https://headlamp.dev) plu
     enabled: true
     configContent: |
       plugins:
-        - name: headlamp-pod-map
-          source: https://artifacthub.io/packages/headlamp/headlamp-pod-map/headlamp-pod-map
+        - name: headlamp-node-overview
+          source: https://artifacthub.io/packages/headlamp/headlamp-node-overview/headlamp-node-overview
   ```
 
   Alternatively build an image that carries the plugin and copy it in with an init container: see [deploy/Dockerfile](deploy/Dockerfile) and [deploy/headlamp-values.yaml](deploy/headlamp-values.yaml).
 
-- **Manually**: download `headlamp-pod-map-<version>.tar.gz` from the [releases](https://github.com/karma-git/headlamp-pod-map/releases) and extract it into the Headlamp plugins directory (`~/.config/Headlamp/plugins` on Linux, `~/Library/Application Support/Headlamp/plugins` on macOS, `%APPDATA%\Headlamp\Config\plugins` on Windows).
+- **Manually**: download `headlamp-node-overview-<version>.tar.gz` from the [releases](https://github.com/karma-git/headlamp-node-overview/releases) and extract it into the Headlamp plugins directory (`~/.config/Headlamp/plugins` on Linux, `~/Library/Application Support/Headlamp/plugins` on macOS, `%APPDATA%\Headlamp\Config\plugins` on Windows).
 
 ## Standalone app
 
@@ -53,7 +53,7 @@ For development, run `kubectl proxy --port=8001` and `npm run dev`; Vite proxies
 | Path                         | What                                                                  |
 | ---------------------------- | --------------------------------------------------------------------- |
 | `packages/core`              | Framework-free conversion, layout, filtering and canvas rendering     |
-| `packages/headlamp-pod-map`  | The Headlamp plugin                                                   |
+| `packages/headlamp-node-overview`  | The Headlamp plugin                                                   |
 | `packages/app`               | The standalone app (list/watch over `kubectl proxy`)                  |
 | `deploy`                     | Plugin carrier image and example Headlamp Helm values                 |
 

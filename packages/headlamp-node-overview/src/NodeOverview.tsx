@@ -1,5 +1,6 @@
 import { K8s, Router } from '@kinvolk/headlamp-plugin/lib';
 import { request } from '@kinvolk/headlamp-plugin/lib/ApiProxy';
+import { MenuItem, Select, TextField, Typography, useTheme } from '@mui/material';
 import {
   type ColorMode,
   compileQuery,
@@ -21,8 +22,7 @@ import {
   toPod,
   type Usage,
   type View,
-} from '@kubefast/core';
-import { MenuItem, Select, TextField, Typography, useTheme } from '@mui/material';
+} from '@node-overview/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -61,7 +61,7 @@ function useUsage(): { usage: Usage; error: string } {
   return { usage, error };
 }
 
-export default function PodMap() {
+export default function NodeOverview() {
   const [podItems, podErr] = K8s.ResourceClasses.Pod.useList();
   const [nodeItems, nodeErr] = K8s.ResourceClasses.Node.useList();
 

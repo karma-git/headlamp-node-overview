@@ -1,6 +1,6 @@
-import { toNode, toPod } from '@kubefast/core';
+import { toNode, toPod } from '@node-overview/core';
 import { listWatch } from './watch';
-import type { NodeInfo, PodInfo } from '@kubefast/core';
+import type { NodeInfo, PodInfo } from '@node-overview/core';
 
 export type Conn = 'syncing' | 'live' | 'error';
 
