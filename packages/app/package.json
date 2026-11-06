@@ -9,5 +9,5 @@
     "serve": "npm run build && kubectl proxy --www=./dist --www-prefix=/ui/ --api-prefix=/ --port=8001"
   },
   "dependencies": { "@node-overview/core": "*" },
-  "devDependencies": { "typescript": "^5.6.0", "vite": "^6.0.0" }
+  "devDependencies": { "typescript": "^7.0.2", "vite": "^8.3.5" }
 }
