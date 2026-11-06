@@ -1,6 +1,6 @@
 {
   "name": "headlamp-node-overview",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fast node overview for Headlamp: every node and its pods on one canvas, grouped by node labels, with requests/limits/usage bars, search and tooltips",
   "scripts": {
     "start": "headlamp-plugin start",
